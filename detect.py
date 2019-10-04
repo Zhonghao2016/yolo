@@ -15,6 +15,7 @@ import pandas as pd
 import random 
 import pickle as pkl
 import itertools
+import pdb
 
 class test_net(nn.Module):
     def __init__(self, num_layers, input_size):
@@ -207,7 +208,6 @@ if __name__ ==  '__main__':
         #But both these operations require looping, hence 
         #clubbing these ops in one loop instead of two. 
         #loops are slower than vectorised operations. 
-        
         prediction = write_results(prediction, confidence, num_classes, nms = True, nms_conf = nms_thesh)
         
         
@@ -226,12 +226,14 @@ if __name__ ==  '__main__':
         
     
             
-          
         if not write:
             output = prediction
             write = 1
         else:
-            output = torch.cat((output,prediction))
+            if torch.sum(output) == 0:
+                output = prediction
+            else:
+                output = torch.cat((output,prediction))
             
         
         
